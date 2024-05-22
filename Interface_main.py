@@ -38,6 +38,7 @@ drink = {
     3: "Trà tắc",
 }
 
+
 def change_selected_drink(selected_drink):
     drink_string = ",".join(str(x) for x in selected_drink)  # Convert list to string
     for i in range(1, 4):  # Loop through fruit indices (1, 2, 3)
@@ -219,7 +220,7 @@ def DRINK():
             center_y = SELECT1.rect.y + SELECT1.rect.height // 2
 
             # Position the enlarged image centered on the button
-            enlarged_image_x = center_x - 300
+            enlarged_image_x = center_x - 305
             enlarged_image_y = center_y - 300
             SCREEN.blit(pygame.transform.scale(pygame.image.load("display board/img/trà_sữa.png"), (600, 600)), (enlarged_image_x, enlarged_image_y))
         elif enlarged_image_rect2 is not None and 2 in selected_options['drink']:
@@ -324,25 +325,14 @@ def Payment(selected_options_topping):
                     
                     if NEXT3.checkForInput(PAY_MOUSE_POS):
                         sound_button.play()
-                        main_menu()
+                        AI()
                         
         pygame.display.update()
-        
 
 def AI():
     while True:
         AI_MOUSE_POS = pygame.mouse.get_pos()
 
-        # Đọc frame từ video
-        #ret, frame = cap.read()
-        #if not ret:
-         #   break
-        #frame = cv2.transpose(frame)
-        # Chuyển frame từ OpenCV sang Pygame
-        #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        #frame = pygame.surfarray.make_surface(frame)
-
-        # Hiển thị frame
         SCREEN.blit(BG, (0, 0))
 
         PLAY_BACK_AI = Button(image=None, pos=(250, 850), 
@@ -353,30 +343,27 @@ def AI():
         NEXT_AI = Button(image=None, pos=(850, 850), 
                         text_input="NEXT", font=get_font(55), base_color="Black" if len(selected_options['drink']) > 0 else "#808080", hovering_color="Green")
 
-                
-        
-        for button in [PLAY_BACK_AI,START_AI,NEXT_AI]:
-                button.changeColor(AI_MOUSE_POS)
-                button.update(SCREEN)
+
+        for button in [PLAY_BACK_AI, START_AI, NEXT_AI]:
+            button.changeColor(AI_MOUSE_POS)
+            button.update(SCREEN)
+
         for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        pygame.quit()
-                        sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if PLAY_BACK_AI.checkForInput(AI_MOUSE_POS):
-                        sound_button.play()
-                        Payment()
-                    
-                    if START_AI.checkForInput(AI_MOUSE_POS):
-                        sound_button.play()                    
-                        os.system("python Output.py")
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if PLAY_BACK_AI.checkForInput(AI_MOUSE_POS):
+                    sound_button.play()
+                    Payment()
+                if START_AI.checkForInput(AI_MOUSE_POS):
+                    sound_button.play()
+                    os.system("python Output.py")
+                if NEXT_AI.checkForInput(AI_MOUSE_POS):
+                    sound_button.play()
+                    main_menu()
 
-                    if NEXT_AI.checkForInput(AI_MOUSE_POS):
-                        sound_button.play()
-                        game()
         pygame.display.update()
-        
 
-
-main_menu() 
+main_menu()
